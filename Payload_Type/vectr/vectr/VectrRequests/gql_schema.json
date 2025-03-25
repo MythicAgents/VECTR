@@ -1,0 +1,2754 @@
+{
+  "data": {
+    "__schema": {
+      "types": [
+        {
+          "name": "ActivityLogged",
+          "fields": null
+        },
+        {
+          "name": "AddAttackLogToTestCaseInput",
+          "fields": null
+        },
+        {
+          "name": "AddAttackLogToTestCaseOptions",
+          "fields": null
+        },
+        {
+          "name": "AddAttackLogToTestCasePayload",
+          "fields": [
+            {
+              "name": "testCase",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "AlertSeverity",
+          "fields": null
+        },
+        {
+          "name": "AlertTriggered",
+          "fields": null
+        },
+        {
+          "name": "Assessment",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "organizations",
+              "description": null
+            },
+            {
+              "name": "campaigns",
+              "description": null
+            },
+            {
+              "name": "assessmentIds",
+              "description": null
+            },
+            {
+              "name": "metadata",
+              "description": null
+            },
+            {
+              "name": "tags",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "killChain",
+              "description": null
+            },
+            {
+              "name": "defaultTcDataVer",
+              "description": "Default Test Case data version is only relevant to ENV (local) Assessment data, doesn't apply to Library data and will return NULL.\nFor new Assessments, this defaults to a value of 2 which allows recording Test Case Outcomes at a per-tool level.\nWhen set to 1 this defaults newly created Test Cases to Legacy mode which records a single outcome for the Test Case and all associated tools"
+            },
+            {
+              "name": "defenseTools",
+              "description": "Defense Tools are only relevant to ENV (local) Test Cases, will return NULL for Library Assessments\nThis represents a snapshot of the active Environment's Defense Tools when the Assessment was created\nAn Assessment's associated Defense Tools are used to infer which tools should be shown on a Test Case by default\nfor the purpose of recording Test Outcomes"
+            },
+            {
+              "name": "importTime",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "AssessmentConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Assessments"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "AssessmentFilter",
+          "fields": null
+        },
+        {
+          "name": "AssessmentMutations",
+          "fields": [
+            {
+              "name": "create",
+              "description": null
+            },
+            {
+              "name": "createTemplate",
+              "description": null
+            },
+            {
+              "name": "delete",
+              "description": null
+            },
+            {
+              "name": "deleteTemplate",
+              "description": null
+            },
+            {
+              "name": "update",
+              "description": null
+            },
+            {
+              "name": "updateTemplate",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "AttackAutomationExecutor",
+          "fields": null
+        },
+        {
+          "name": "AttackAutomationInput",
+          "fields": null
+        },
+        {
+          "name": "AttackAutomationVariable",
+          "fields": null
+        },
+        {
+          "name": "AttackLog",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "fileName",
+              "description": null
+            },
+            {
+              "name": "targetType",
+              "description": null
+            },
+            {
+              "name": "src",
+              "description": null
+            },
+            {
+              "name": "environmentId",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "AttackLogEntry",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "content",
+              "description": null
+            },
+            {
+              "name": "logLevel",
+              "description": null
+            },
+            {
+              "name": "logType",
+              "description": null
+            },
+            {
+              "name": "logTime",
+              "description": null
+            },
+            {
+              "name": "envAttackLogProcedureId",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "AttackLogProcedure",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "envAttackLogId",
+              "description": null
+            },
+            {
+              "name": "attackLogEntry",
+              "description": null
+            },
+            {
+              "name": "attackLog",
+              "description": null
+            },
+            {
+              "name": "procedureStart",
+              "description": null
+            },
+            {
+              "name": "procedureStop",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "AutomationArgument",
+          "fields": [
+            {
+              "name": "argumentKey",
+              "description": null
+            },
+            {
+              "name": "argumentValue",
+              "description": null
+            },
+            {
+              "name": "argumentType",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "AutomationVarType",
+          "fields": null
+        },
+        {
+          "name": "BaseSortField",
+          "fields": null
+        },
+        {
+          "name": "BaseSortOrder",
+          "fields": null
+        },
+        {
+          "name": "BlueTool",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "active",
+              "description": null
+            },
+            {
+              "name": "defensiveLayers",
+              "description": null
+            },
+            {
+              "name": "defenseToolProduct",
+              "description": null
+            },
+            {
+              "name": "template",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "BlueToolConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Blue Tools"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "Boolean",
+          "fields": null
+        },
+        {
+          "name": "Campaign",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "icon",
+              "description": null
+            },
+            {
+              "name": "organizations",
+              "description": null
+            },
+            {
+              "name": "testCases",
+              "description": null
+            },
+            {
+              "name": "metadata",
+              "description": null
+            },
+            {
+              "name": "attackLogProcedures",
+              "description": null
+            },
+            {
+              "name": "tags",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CampaignConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Campaigns"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "CampaignFilter",
+          "fields": null
+        },
+        {
+          "name": "CampaignMutations",
+          "fields": [
+            {
+              "name": "create",
+              "description": null
+            },
+            {
+              "name": "createTemplate",
+              "description": null
+            },
+            {
+              "name": "updateTemplate",
+              "description": null
+            },
+            {
+              "name": "delete",
+              "description": null
+            },
+            {
+              "name": "deleteTemplate",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CampaignSortField",
+          "fields": null
+        },
+        {
+          "name": "CampaignSortInput",
+          "fields": null
+        },
+        {
+          "name": "ClDefenseTool",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CloneTestCaseTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "ConfigMutations",
+          "fields": [
+            {
+              "name": "setVectrSSLConfig",
+              "description": null
+            },
+            {
+              "name": "deleteUploadedSSLConfig",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CreateAssessmentDataInput",
+          "fields": null
+        },
+        {
+          "name": "CreateAssessmentInput",
+          "fields": null
+        },
+        {
+          "name": "CreateAssessmentPayload",
+          "fields": [
+            {
+              "name": "assessments",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CreateAssessmentTemplateDataInput",
+          "fields": null
+        },
+        {
+          "name": "CreateAssessmentTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "CreateAttackLogEntryInput",
+          "fields": null
+        },
+        {
+          "name": "CreateAttackLogProcedureInput",
+          "fields": null
+        },
+        {
+          "name": "CreateCampaignDataInput",
+          "fields": null
+        },
+        {
+          "name": "CreateCampaignInput",
+          "fields": null
+        },
+        {
+          "name": "CreateCampaignPayload",
+          "fields": [
+            {
+              "name": "campaigns",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CreateCampaignTemplateDataInput",
+          "fields": null
+        },
+        {
+          "name": "CreateCampaignTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "CreateDefenseToolProductDataInput",
+          "fields": null
+        },
+        {
+          "name": "CreateDefenseToolProductInput",
+          "fields": null
+        },
+        {
+          "name": "CreateDefenseToolProductPayload",
+          "fields": [
+            {
+              "name": "defenseToolProducts",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CreateFavoriteTagInput",
+          "fields": null
+        },
+        {
+          "name": "CreateFavoriteTagPayload",
+          "fields": [
+            {
+              "name": "status",
+              "description": null
+            },
+            {
+              "name": "message",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CreateSourceDataInput",
+          "fields": null
+        },
+        {
+          "name": "CreateSourceInput",
+          "fields": null
+        },
+        {
+          "name": "CreateSourcePayload",
+          "fields": [
+            {
+              "name": "source",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CreateTagInput",
+          "fields": null
+        },
+        {
+          "name": "CreateTagPayload",
+          "fields": [
+            {
+              "name": "tags",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CreateTargetDataInput",
+          "fields": null
+        },
+        {
+          "name": "CreateTargetInput",
+          "fields": null
+        },
+        {
+          "name": "CreateTargetPayload",
+          "fields": [
+            {
+              "name": "target",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CreateTestCaseAndTemplateMatchByNameInput",
+          "fields": null
+        },
+        {
+          "name": "CreateTestCaseDataInput",
+          "fields": null
+        },
+        {
+          "name": "CreateTestCaseDataWithTemplateNameInput",
+          "fields": null
+        },
+        {
+          "name": "CreateTestCasePayload",
+          "fields": [
+            {
+              "name": "testCases",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "CreateTestCaseTemplateDataInput",
+          "fields": null
+        },
+        {
+          "name": "CreateTestCaseTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "CreateTestCaseWithoutTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "Database",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DateTime",
+          "fields": null
+        },
+        {
+          "name": "DefenseToolInput",
+          "fields": null
+        },
+        {
+          "name": "DefenseToolOutcome",
+          "fields": [
+            {
+              "name": "defenseToolId",
+              "description": null
+            },
+            {
+              "name": "outcomeId",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DefenseToolOutcomeInput",
+          "fields": null
+        },
+        {
+          "name": "DefenseToolProduct",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "ref",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "icon",
+              "description": null
+            },
+            {
+              "name": "defensiveLayers",
+              "description": null
+            },
+            {
+              "name": "vendor",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DefenseToolProductMutations",
+          "fields": [
+            {
+              "name": "create",
+              "description": null
+            },
+            {
+              "name": "update",
+              "description": null
+            },
+            {
+              "name": "delete",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DefenseToolProductsConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Defense Tool Products"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "DefensiveLayer",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "icon",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "template",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DefensiveLayerConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Defensive Layers"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "DeleteAssessmentInput",
+          "fields": null
+        },
+        {
+          "name": "DeleteAssessmentPayload",
+          "fields": [
+            {
+              "name": "deletedIds",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DeleteAssessmentTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "DeleteAssessmentTemplatePayload",
+          "fields": [
+            {
+              "name": "deletedIds",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DeleteCampaignInput",
+          "fields": null
+        },
+        {
+          "name": "DeleteCampaignPayload",
+          "fields": [
+            {
+              "name": "deletedIds",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DeleteCampaignTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "DeleteCampaignTemplatePayload",
+          "fields": [
+            {
+              "name": "deletedIds",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DeleteDefenseToolProductInput",
+          "fields": null
+        },
+        {
+          "name": "DeleteDefenseToolProductPayload",
+          "fields": [
+            {
+              "name": "deletedIds",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DeleteFavoriteTagInput",
+          "fields": null
+        },
+        {
+          "name": "DeleteFavoriteTagPayload",
+          "fields": [
+            {
+              "name": "status",
+              "description": null
+            },
+            {
+              "name": "message",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DeleteTestCaseInput",
+          "fields": null
+        },
+        {
+          "name": "DeleteTestCasePayload",
+          "fields": [
+            {
+              "name": "deletedIds",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DeleteTestCaseTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "DeleteTestCaseTemplatePayload",
+          "fields": [
+            {
+              "name": "deletedIds",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DeleteUnstructuredLogInput",
+          "fields": null
+        },
+        {
+          "name": "DeleteUnstructuredLogPayload",
+          "fields": [
+            {
+              "name": "deletedIds",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "DeleteUploadedSSLConfigPayload",
+          "fields": [
+            {
+              "name": "status",
+              "description": null
+            },
+            {
+              "name": "message",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "ExecutionArtifact",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "filename",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "encodeKey",
+              "description": null
+            },
+            {
+              "name": "nonce",
+              "description": null
+            },
+            {
+              "name": "fileSize",
+              "description": null
+            },
+            {
+              "name": "uuid",
+              "description": null
+            },
+            {
+              "name": "ver",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "ExecutionArtifactConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Execution Artifacts"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "ExecutionArtifactIdInfo",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "variableName",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "ExecutionArtifactIdInfoInput",
+          "fields": null
+        },
+        {
+          "name": "FavoriteTagIds",
+          "fields": [
+            {
+              "name": "tagType",
+              "description": null
+            },
+            {
+              "name": "tagIds",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "FavoriteTagMutations",
+          "fields": [
+            {
+              "name": "create",
+              "description": null
+            },
+            {
+              "name": "delete",
+              "description": null
+            },
+            {
+              "name": "primeDefaultsForUser",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "Float",
+          "fields": null
+        },
+        {
+          "name": "Int",
+          "fields": null
+        },
+        {
+          "name": "KillChain",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "phases",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "KillChainConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Kill Chains"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "MetadataFilter",
+          "fields": null
+        },
+        {
+          "name": "MetadataKeyValuePair",
+          "fields": [
+            {
+              "name": "key",
+              "description": null
+            },
+            {
+              "name": "value",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "MetadataKeyValuePairInput",
+          "fields": null
+        },
+        {
+          "name": "MetadataSummary",
+          "fields": [
+            {
+              "name": "metadataKeys",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "MetadataSummaryFilter",
+          "fields": null
+        },
+        {
+          "name": "MetadataSummaryItem",
+          "fields": [
+            {
+              "name": "key",
+              "description": null
+            },
+            {
+              "name": "values",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "MetadataType",
+          "fields": null
+        },
+        {
+          "name": "MitreFrameworkType",
+          "fields": null
+        },
+        {
+          "name": "MitreTactic",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "frameworkType",
+              "description": null
+            },
+            {
+              "name": "stixId",
+              "description": null
+            },
+            {
+              "name": "externalId",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "Mutation",
+          "fields": [
+            {
+              "name": "testCase",
+              "description": null
+            },
+            {
+              "name": "assessment",
+              "description": null
+            },
+            {
+              "name": "campaign",
+              "description": null
+            },
+            {
+              "name": "outcome",
+              "description": null
+            },
+            {
+              "name": "tag",
+              "description": null
+            },
+            {
+              "name": "target",
+              "description": null
+            },
+            {
+              "name": "source",
+              "description": null
+            },
+            {
+              "name": "config",
+              "description": null
+            },
+            {
+              "name": "favoriteTag",
+              "description": null
+            },
+            {
+              "name": "unstructuredLog",
+              "description": null
+            },
+            {
+              "name": "defenseToolProduct",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "NameFilter",
+          "fields": null
+        },
+        {
+          "name": "OrderDirection",
+          "fields": null
+        },
+        {
+          "name": "Organization",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "abbreviation",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "url",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "OrganizationConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Organizations"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "Outcome",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "abbreviation",
+              "description": null
+            },
+            {
+              "name": "path",
+              "description": "Dot delimited path identifying the outcome's position in the Outcome tree structure. (Example: 'Blocked.Blocked_Alerted_No' for 'Blocked_Alerted_No' under the parent Outcome 'Blocked')"
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            },
+            {
+              "name": "reportText",
+              "description": null
+            },
+            {
+              "name": "reportTextColor",
+              "description": "Hex Color string like \"#F44336\""
+            },
+            {
+              "name": "coverageScore",
+              "description": null
+            },
+            {
+              "name": "defenseSuccessScore",
+              "description": null
+            },
+            {
+              "name": "systemFlag",
+              "description": null
+            },
+            {
+              "name": "historicalTrendSuccess",
+              "description": null
+            },
+            {
+              "name": "historicalTrendCategory",
+              "description": null
+            },
+            {
+              "name": "childQuestion",
+              "description": "UI prompt question for user to consider when selecting child elements. (Example: 'Alerted' may be a top level outcome but a child question of 'Severity?' could be used for child outcomes of 'Low' and 'High')"
+            },
+            {
+              "name": "userSelectable",
+              "description": null
+            },
+            {
+              "name": "requiresBlueTool",
+              "description": null
+            },
+            {
+              "name": "defaultable",
+              "description": null
+            },
+            {
+              "name": "icon",
+              "description": null
+            },
+            {
+              "name": "parentId",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "OutcomeMutations",
+          "fields": [
+            {
+              "name": "update",
+              "description": " create(\n    input: CreateOutcomeInput!\n): OutcomePayload"
+            }
+          ]
+        },
+        {
+          "name": "OutcomePayload",
+          "fields": [
+            {
+              "name": "outcomes",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "OutcomeTreeNode",
+          "fields": [
+            {
+              "name": "node",
+              "description": null
+            },
+            {
+              "name": "nodeIsLeaf",
+              "description": null
+            },
+            {
+              "name": "children",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "PageInfo",
+          "fields": [
+            {
+              "name": "endCursor",
+              "description": "When paginating forward, the cursor to continue"
+            },
+            {
+              "name": "hasNextPage",
+              "description": "When paginating forwards, are there more items?"
+            }
+          ]
+        },
+        {
+          "name": "Phase",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "abbreviation",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "mitreTactics",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "PhaseConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Phases"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "PrimeDefaultFavoriteTagsForUserInput",
+          "fields": null
+        },
+        {
+          "name": "PrimeDefaultFavoriteTagsForUserPayload",
+          "fields": [
+            {
+              "name": "status",
+              "description": null
+            },
+            {
+              "name": "message",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "Query",
+          "fields": [
+            {
+              "name": "assessment",
+              "description": "Query information about an Assessment"
+            },
+            {
+              "name": "assessments",
+              "description": "Query for all Assessments in the given database"
+            },
+            {
+              "name": "assessmentsByIds",
+              "description": "Query for Assessments in the given ID list and database"
+            },
+            {
+              "name": "libraryAssessment",
+              "description": "Query information about an Assessment"
+            },
+            {
+              "name": "libraryAssessments",
+              "description": "Query for all Library Assessments"
+            },
+            {
+              "name": "libraryAssessmentsByIds",
+              "description": "Query for Assessments in the given ID list and database"
+            },
+            {
+              "name": "campaign",
+              "description": "Query information about a Campaign"
+            },
+            {
+              "name": "campaigns",
+              "description": "Query for all Campaigns in the given database"
+            },
+            {
+              "name": "campaignsByIds",
+              "description": "Query for Campaigns in the given ID list and database"
+            },
+            {
+              "name": "libraryCampaign",
+              "description": null
+            },
+            {
+              "name": "libraryCampaigns",
+              "description": null
+            },
+            {
+              "name": "libraryCampaignsByIds",
+              "description": null
+            },
+            {
+              "name": "databases",
+              "description": "Query for Database list"
+            },
+            {
+              "name": "defensivelayer",
+              "description": "Query information about a Defensive Layer"
+            },
+            {
+              "name": "defensivelayers",
+              "description": "Query for all Defensive Layers in the given database"
+            },
+            {
+              "name": "defensivelayersByIds",
+              "description": "Query for Defensive Layers in the given ID list and database"
+            },
+            {
+              "name": "libraryDefensivelayer",
+              "description": "Query information about a Defensive Layer"
+            },
+            {
+              "name": "libraryDefensivelayers",
+              "description": "Query for all Defensive Layers in the given database"
+            },
+            {
+              "name": "libraryDefensivelayersByIds",
+              "description": "Query for Defensive Layers in the given ID list and database"
+            },
+            {
+              "name": "defenseToolProducts",
+              "description": "Query for all defense tool products"
+            },
+            {
+              "name": "defenseToolProductsByIds",
+              "description": null
+            },
+            {
+              "name": "bluetool",
+              "description": "Query information about a blue / defense tool"
+            },
+            {
+              "name": "bluetools",
+              "description": "Query for all blue tools in the given database"
+            },
+            {
+              "name": "libraryBluetool",
+              "description": "Query information about a blue / defense tool"
+            },
+            {
+              "name": "libraryBluetools",
+              "description": "Query for all blue tools in the Content Library"
+            },
+            {
+              "name": "executionArtifactsByIds",
+              "description": null
+            },
+            {
+              "name": "myFavoriteTagIds",
+              "description": null
+            },
+            {
+              "name": "killchain",
+              "description": "Query information about a specific Kill Chain"
+            },
+            {
+              "name": "killchains",
+              "description": "Query for all Kill Chains in the given database"
+            },
+            {
+              "name": "killchainsByIds",
+              "description": "Query for Kill Chains in the given ID list and database"
+            },
+            {
+              "name": "metadataSummary",
+              "description": ""
+            },
+            {
+              "name": "outcome",
+              "description": "# Query information about a specific Outcome"
+            },
+            {
+              "name": "outcomes",
+              "description": "# Query for a flat collection of all Outcomes"
+            },
+            {
+              "name": "outcomesTree",
+              "description": "# Query for entire Outcome Tree organized as nodes and children elements"
+            },
+            {
+              "name": "organization",
+              "description": "Query information about a specific Organizations"
+            },
+            {
+              "name": "organizations",
+              "description": "Query for all Organizations"
+            },
+            {
+              "name": "phase",
+              "description": "Query information about a specific Phase"
+            },
+            {
+              "name": "phases",
+              "description": "Query for all Phases in the given database"
+            },
+            {
+              "name": "phasesByIds",
+              "description": "Query for Phases in the given ID list and database"
+            },
+            {
+              "name": "redtool",
+              "description": "# Query information about a red tool"
+            },
+            {
+              "name": "redtools",
+              "description": "Query for all red tools in the given database"
+            },
+            {
+              "name": "reportingBucketsTree",
+              "description": "Query for entire Outcome Tree organized as nodes and children elements"
+            },
+            {
+              "name": "libraryRedtool",
+              "description": "Query for information about a red tool in the Content Library"
+            },
+            {
+              "name": "libraryRedtools",
+              "description": "Query for all red tools in the Content Library"
+            },
+            {
+              "name": "tag",
+              "description": "Query for information about a Tag"
+            },
+            {
+              "name": "tags",
+              "description": "Query for all Tags"
+            },
+            {
+              "name": "tagTypes",
+              "description": null
+            },
+            {
+              "name": "testcase",
+              "description": "Query information about a specific Test Case"
+            },
+            {
+              "name": "testcases",
+              "description": "Query for all Test Cases in the given database"
+            },
+            {
+              "name": "testcasesByIds",
+              "description": "Query for Test Cases in the given ID list and database"
+            },
+            {
+              "name": "libraryTestcase",
+              "description": "Query information about a specific Test Case"
+            },
+            {
+              "name": "libraryTestcases",
+              "description": "Query for all Library Test Cases"
+            },
+            {
+              "name": "libraryTestcasesByIds",
+              "description": null
+            },
+            {
+              "name": "vendor",
+              "description": null
+            },
+            {
+              "name": "vendors",
+              "description": "Query for all Vendors in the given database"
+            },
+            {
+              "name": "vendorsByIds",
+              "description": "Query for Vendor information in the given ID list and database"
+            },
+            {
+              "name": "libraryVendor",
+              "description": null
+            },
+            {
+              "name": "libraryVendors",
+              "description": null
+            },
+            {
+              "name": "libraryVendorsByIds",
+              "description": null
+            },
+            {
+              "name": "unstructuredLogsByIds",
+              "description": null
+            },
+            {
+              "name": "vectrAppConfig",
+              "description": null
+            },
+            {
+              "name": "vectrUploadedSSLConfig",
+              "description": null
+            },
+            {
+              "name": "vectrSSLConfig",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "RedTool",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "active",
+              "description": null
+            },
+            {
+              "name": "toolVersion",
+              "description": null
+            },
+            {
+              "name": "vendor",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "RedToolConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Red Tools"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "RedToolInput",
+          "fields": null
+        },
+        {
+          "name": "ReportingBucket",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "systemFlag",
+              "description": null
+            },
+            {
+              "name": "reportTextColor",
+              "description": null
+            },
+            {
+              "name": "abbreviation",
+              "description": null
+            },
+            {
+              "name": "reportText",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "ReportingBucketTreeNode",
+          "fields": [
+            {
+              "name": "node",
+              "description": null
+            },
+            {
+              "name": "children",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "SimpleOperationStatus",
+          "fields": null
+        },
+        {
+          "name": "Source",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "SourceMutations",
+          "fields": [
+            {
+              "name": "create",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "String",
+          "fields": null
+        },
+        {
+          "name": "StringOperator",
+          "fields": null
+        },
+        {
+          "name": "Tag",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "sys",
+              "description": null
+            },
+            {
+              "name": "tagTypeId",
+              "description": null
+            },
+            {
+              "name": "tagColor",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "TagConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Test Cases"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "TagFilter",
+          "fields": null
+        },
+        {
+          "name": "TagMutations",
+          "fields": [
+            {
+              "name": "create",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "TagType",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "ref",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "TagTypeEnum",
+          "fields": null
+        },
+        {
+          "name": "Target",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "TargetMutations",
+          "fields": [
+            {
+              "name": "create",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "TemplateNamePrefixInput",
+          "fields": null
+        },
+        {
+          "name": "TestCase",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "method",
+              "description": null
+            },
+            {
+              "name": "libraryTestCaseId",
+              "description": null
+            },
+            {
+              "name": "mitreId",
+              "description": null
+            },
+            {
+              "name": "deprecated",
+              "description": null
+            },
+            {
+              "name": "organizations",
+              "description": null
+            },
+            {
+              "name": "defensiveLayers",
+              "description": null
+            },
+            {
+              "name": "outcomeNotes",
+              "description": null
+            },
+            {
+              "name": "outcome",
+              "description": null
+            },
+            {
+              "name": "operatorGuidance",
+              "description": null
+            },
+            {
+              "name": "redTools",
+              "description": null
+            },
+            {
+              "name": "blueTools",
+              "description": null
+            },
+            {
+              "name": "metadata",
+              "description": null
+            },
+            {
+              "name": "tags",
+              "description": null
+            },
+            {
+              "name": "phase",
+              "description": null
+            },
+            {
+              "name": "automationCmd",
+              "description": null
+            },
+            {
+              "name": "automationExecutor",
+              "description": null
+            },
+            {
+              "name": "automationCleanup",
+              "description": null
+            },
+            {
+              "name": "automationCleanupExecutor",
+              "description": null
+            },
+            {
+              "name": "automationArgument",
+              "description": null
+            },
+            {
+              "name": "executionArtifactIdInfo",
+              "description": null
+            },
+            {
+              "name": "attackLogProcedures",
+              "description": null
+            },
+            {
+              "name": "status",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "targets",
+              "description": null
+            },
+            {
+              "name": "sources",
+              "description": null
+            },
+            {
+              "name": "detectionGuidance",
+              "description": null
+            },
+            {
+              "name": "preventionGuidance",
+              "description": null
+            },
+            {
+              "name": "detectionTime",
+              "description": null
+            },
+            {
+              "name": "attackStop",
+              "description": null
+            },
+            {
+              "name": "attackStart",
+              "description": null
+            },
+            {
+              "name": "references",
+              "description": null
+            },
+            {
+              "name": "dataVer",
+              "description": "Data Ver is only relevant for ENV (non-Library) Test Cases.\nFor new Assessments, this typically defaults to a value of 2 which allows recording Test Case Outcomes at a per-tool level.\nWhen set to 1, Outcome recording is in Legacy mode which records a single outcome for the Test Case and all associated tools"
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            },
+            {
+              "name": "defenseToolOutcomes",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "TestCaseConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Test Cases"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "TestCaseFilter",
+          "fields": null
+        },
+        {
+          "name": "TestCaseMutations",
+          "fields": [
+            {
+              "name": "cloneTemplate",
+              "description": null
+            },
+            {
+              "name": "createTemplate",
+              "description": "Creates a Test Case template in the Administration section"
+            },
+            {
+              "name": "createWithoutTemplate",
+              "description": "Creates a Test Case in the target database only, does not create a template"
+            },
+            {
+              "name": "createWithTemplateMatchByName",
+              "description": "Creates a Test Case in the target database and matches to an existing template by name or creates a new one if no match is found"
+            },
+            {
+              "name": "delete",
+              "description": null
+            },
+            {
+              "name": "deleteTemplate",
+              "description": null
+            },
+            {
+              "name": "update",
+              "description": null
+            },
+            {
+              "name": "updateTemplate",
+              "description": null
+            },
+            {
+              "name": "addAttackLogProcedure",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "TestCaseSortField",
+          "fields": null
+        },
+        {
+          "name": "TestCaseSortOrder",
+          "fields": null
+        },
+        {
+          "name": "TestCaseStatus",
+          "fields": null
+        },
+        {
+          "name": "TimelineEvent",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "team",
+              "description": null
+            },
+            {
+              "name": "fieldName",
+              "description": null
+            },
+            {
+              "name": "fieldAction",
+              "description": null
+            },
+            {
+              "name": "type",
+              "description": null
+            },
+            {
+              "name": "manualDescription",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "UnstructuredLog",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "content",
+              "description": null
+            },
+            {
+              "name": "filename",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "UnstructuredLogConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Unstructured Logs"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "UnstructuredLogMutations",
+          "fields": [
+            {
+              "name": "delete",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "UpdateAssessmentDataInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateAssessmentInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateAssessmentPayload",
+          "fields": [
+            {
+              "name": "assessments",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "UpdateAssessmentTemplateDataInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateAssessmentTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateCampaignPayload",
+          "fields": [
+            {
+              "name": "campaigns",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "UpdateCampaignTemplateDataInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateCampaignTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateDefenseToolProductDataInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateDefenseToolProductInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateDefenseToolProductPayload",
+          "fields": [
+            {
+              "name": "defenseToolProducts",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "UpdateOutcomeDataInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateOutcomeInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateTestCaseDataInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateTestCaseInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateTestCasePayload",
+          "fields": [
+            {
+              "name": "testCases",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "UpdateTestCaseTemplateDataInput",
+          "fields": null
+        },
+        {
+          "name": "UpdateTestCaseTemplateInput",
+          "fields": null
+        },
+        {
+          "name": "UploadedVectrSSLConfig",
+          "fields": [
+            {
+              "name": "differsFromCurrent",
+              "description": null
+            },
+            {
+              "name": "config",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "VectrAppConfig",
+          "fields": [
+            {
+              "name": "vectrHostname",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "VectrSSLConfig",
+          "fields": [
+            {
+              "name": "type",
+              "description": null
+            },
+            {
+              "name": "signatureAlgorithm",
+              "description": null
+            },
+            {
+              "name": "sanNames",
+              "description": null
+            },
+            {
+              "name": "subjectName",
+              "description": null
+            },
+            {
+              "name": "issuerName",
+              "description": null
+            },
+            {
+              "name": "validFrom",
+              "description": null
+            },
+            {
+              "name": "validTo",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "VectrSSLConfigInput",
+          "fields": null
+        },
+        {
+          "name": "VectrSSLConfigPayload",
+          "fields": [
+            {
+              "name": "status",
+              "description": null
+            },
+            {
+              "name": "message",
+              "description": null
+            },
+            {
+              "name": "record",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "Vendor",
+          "fields": [
+            {
+              "name": "id",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "icon",
+              "description": null
+            },
+            {
+              "name": "offset",
+              "description": null
+            },
+            {
+              "name": "createTime",
+              "description": null
+            },
+            {
+              "name": "updateTime",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "VendorConnection",
+          "fields": [
+            {
+              "name": "nodes",
+              "description": "List of Vendors"
+            },
+            {
+              "name": "pageInfo",
+              "description": "Information to aid in pagination"
+            }
+          ]
+        },
+        {
+          "name": "__Directive",
+          "fields": [
+            {
+              "name": "name",
+              "description": "The __Directive type represents a Directive that a server supports."
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "isRepeatable",
+              "description": null
+            },
+            {
+              "name": "locations",
+              "description": null
+            },
+            {
+              "name": "args",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "__DirectiveLocation",
+          "fields": null
+        },
+        {
+          "name": "__EnumValue",
+          "fields": [
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "isDeprecated",
+              "description": null
+            },
+            {
+              "name": "deprecationReason",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "__Field",
+          "fields": [
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "args",
+              "description": null
+            },
+            {
+              "name": "type",
+              "description": null
+            },
+            {
+              "name": "isDeprecated",
+              "description": null
+            },
+            {
+              "name": "deprecationReason",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "__InputValue",
+          "fields": [
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "type",
+              "description": null
+            },
+            {
+              "name": "defaultValue",
+              "description": null
+            },
+            {
+              "name": "isDeprecated",
+              "description": null
+            },
+            {
+              "name": "deprecationReason",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "__Schema",
+          "fields": [
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "types",
+              "description": "A list of all types supported by this server."
+            },
+            {
+              "name": "queryType",
+              "description": "The type that query operations will be rooted at."
+            },
+            {
+              "name": "mutationType",
+              "description": "If this server supports mutation, the type that mutation operations will be rooted at."
+            },
+            {
+              "name": "directives",
+              "description": "'A list of all directives supported by this server."
+            },
+            {
+              "name": "subscriptionType",
+              "description": "'If this server support subscription, the type that subscription operations will be rooted at."
+            }
+          ]
+        },
+        {
+          "name": "__Type",
+          "fields": [
+            {
+              "name": "kind",
+              "description": null
+            },
+            {
+              "name": "name",
+              "description": null
+            },
+            {
+              "name": "description",
+              "description": null
+            },
+            {
+              "name": "fields",
+              "description": null
+            },
+            {
+              "name": "interfaces",
+              "description": null
+            },
+            {
+              "name": "possibleTypes",
+              "description": null
+            },
+            {
+              "name": "enumValues",
+              "description": null
+            },
+            {
+              "name": "inputFields",
+              "description": null
+            },
+            {
+              "name": "ofType",
+              "description": null
+            },
+            {
+              "name": "isOneOf",
+              "description": "This field is considered experimental because it has not yet been ratified in the graphql specification"
+            },
+            {
+              "name": "specifiedByURL",
+              "description": null
+            }
+          ]
+        },
+        {
+          "name": "__TypeKind",
+          "fields": null
+        }
+      ]
+    }
+  }
+}
