@@ -39,7 +39,6 @@ class TestCaseUpdateNameArguments(TaskArguments):
                     ui_position=2
                 )]
             )
-
         ]
 
     async def parse_arguments(self):

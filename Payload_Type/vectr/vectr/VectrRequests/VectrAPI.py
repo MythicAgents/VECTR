@@ -629,11 +629,11 @@ def get_testcases_for_campaign_by_id(connection_params: VectrGQLConnParams, db_n
     return 500, "Couldn't find campaign name. Create it in VECTR first."
 
 
-def transform_mythic_task_to_testcase(vectr_con, task_data, provided_test_case_name):
-    task = task_data.get('task')
-    task_metadata = task_data.get('task_metadata')
-    callback = task_data.get('callback')
-    responses = task_data.get('responses')
+def transform_mythic_task_to_testcase(vectr_con, task_data, provided_test_case_name, override_mitre_technique_id, override_mitre_tactic_name):
+    task = task_data.get('task', {})
+    task_metadata = task_data.get('task_metadata', {})
+    callback = task_data.get('callback', {})
+    responses = task_data.get('responses', [])
     
     if provided_test_case_name:
         test_case_name = provided_test_case_name
@@ -655,6 +655,10 @@ Task ID: {task.get('id')}
 """
 
     mitre_id = task_metadata.get('attack') if task_metadata.get('attack') else "T1204"
+    if override_mitre_technique_id:
+        mitre_id = override_mitre_technique_id.upper()
+
+    mitre_tactic_name = override_mitre_tactic_name.title() if override_mitre_tactic_name else "Execution"
 
     outcome_notes = "#### Command Output\n```"
     for response in responses:
@@ -668,6 +672,12 @@ Task ID: {task.get('id')}
         tags.append(f"task_status:{task.get('status')}")
     if task.get('operator_username'):
         tags.append(f"mythic_user:{task.get('operator_username')}")
+    if callback.get('user'):
+        tags.append(f"callback_user:{callback.get('user')}")
+    if callback.get('host'):
+        tags.append(f"callback_host:{callback.get('host')}")
+    if callback.get('display_id'):
+        tags.append(f"callback_host:{callback.get('display_id')}")
 
     outcome = "TBD"
     
@@ -680,7 +690,7 @@ Task ID: {task.get('id')}
     return TestCase(
         Variant=f"{test_case_name}",
         Objective=description,
-        Phase="Execution",
+        Phase=mitre_tactic_name,
         MitreID=mitre_id,
         Tags=','.join(tags),
         Status="Completed",

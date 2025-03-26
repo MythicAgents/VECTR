@@ -3,6 +3,7 @@ from mythic_container.MythicRPC import *
 from vectr.VectrRequests import VectrAPI
 from gql import gql
 
+from pydantic import BaseModel
 
 class TestCaseCreateArguments(TaskArguments):
     def __init__(self, command_line, **kwargs):
@@ -12,16 +13,40 @@ class TestCaseCreateArguments(TaskArguments):
                 name="task_id",
                 type=ParameterType.Number,
                 description="Mythic task display ID",
-                parameter_group_info=[ParameterGroupInfo()]
+                parameter_group_info=[ParameterGroupInfo(
+                    required=True,
+                    ui_position=0,
+                )]
             ),
             CommandParameter(
                 name="name",
                 type=ParameterType.String,
                 description="Name for VECTR test case (default is command executed)",
                 parameter_group_info=[ParameterGroupInfo(
-                    required=False
+                    required=False,
+                    ui_position=1
                 )]
             ),
+            CommandParameter(
+                name="tactic_id",
+                type=ParameterType.ChooseOne,
+                dynamic_query_function=self.get_vectr_mitre_tactics,
+                description="MITRE ATT&CK Enterprise tactic ID",
+                parameter_group_info=[ParameterGroupInfo(
+                    required=False,
+                    ui_position=2
+                )]
+            ),
+            CommandParameter(
+                name="technique_id",
+                type=ParameterType.ChooseOne,
+                dynamic_query_function=self.get_vectr_mitre_techniques,
+                description="MITRE ATT&CK Enterprise technique ID",
+                parameter_group_info=[ParameterGroupInfo(
+                    required=False,
+                    ui_position=3
+                )]
+            )
         ]
 
     async def parse_arguments(self):
@@ -34,6 +59,88 @@ class TestCaseCreateArguments(TaskArguments):
             self.add_arg("task_id", dictionary_arguments["task_id"])
         if "name" in dictionary_arguments:
             self.add_arg("name", dictionary_arguments["name"])
+        if "technique_id" in dictionary_arguments:
+            self.add_arg("technique_id", dictionary_arguments["technique_id"])
+        if "tactic_id" in dictionary_arguments:
+            self.add_arg("tactic_id", dictionary_arguments["tactic_id"])        
+
+    async def get_vectr_mitre_techniques(self, callback: PTRPCDynamicQueryFunctionMessage) -> PTRPCDynamicQueryFunctionMessageResponse:
+        response = PTRPCDynamicQueryFunctionMessageResponse()
+
+        class task_data_mock(BaseModel):
+            BuildParameters: list
+            Secrets: dict
+        
+        payload_resp = await SendMythicRPCPayloadSearch(MythicRPCPayloadSearchMessage(
+            CallbackID=callback.Callback,
+            PayloadUUID=callback.PayloadUUID,
+            PayloadTypes=[callback.PayloadType],
+        ))
+        if not payload_resp.Success:
+            response.Error = payload_resp.Error
+            return response
+        if len(payload_resp.Payloads) == 0:
+            response.Error = "No payloads found"
+            return response
+
+        task_data = task_data_mock(BuildParameters=payload_resp.Payloads[0].BuildParameters, Secrets=callback.Secrets)
+
+        rest_vectr, gql_vectr = VectrAPI.initialise_vectr_connection(task_data)
+        response_code, techniques = VectrAPI.rest_get_mitre_techniques(rest_vectr.connection_params)
+        
+        if response_code != 200:
+            response.Error = "Error fetching test cases"
+            return response
+
+        mitre_ids = [""]
+        techniques.sort(key=lambda x: x['mitreId'])
+
+        for technique in techniques:
+            mitre_ids.append(f"{technique['mitreId']} - {technique['name']}")       
+
+        response.Success = True
+        response.Choices = mitre_ids
+        return response
+    
+    
+    async def get_vectr_mitre_tactics(self, callback: PTRPCDynamicQueryFunctionMessage) -> PTRPCDynamicQueryFunctionMessageResponse:
+        response = PTRPCDynamicQueryFunctionMessageResponse()
+
+        class task_data_mock(BaseModel):
+            BuildParameters: list
+            Secrets: dict
+        
+        payload_resp = await SendMythicRPCPayloadSearch(MythicRPCPayloadSearchMessage(
+            CallbackID=callback.Callback,
+            PayloadUUID=callback.PayloadUUID,
+            PayloadTypes=[callback.PayloadType],
+        ))
+        if not payload_resp.Success:
+            response.Error = payload_resp.Error
+            return response
+        if len(payload_resp.Payloads) == 0:
+            response.Error = "No payloads found"
+            return response
+
+        task_data = task_data_mock(BuildParameters=payload_resp.Payloads[0].BuildParameters, Secrets=callback.Secrets)
+
+        rest_vectr, gql_vectr = VectrAPI.initialise_vectr_connection(task_data)
+        response_code, tactics = VectrAPI.rest_get_mitre_tactics(rest_vectr.connection_params, rest_vectr.target_db, rest_vectr.assessment_id)
+        
+        if response_code != 200:
+            response.Error = "Error fetching test cases"
+            return response
+
+        mitre_ids = [""]
+        tactics.sort(key=lambda x: x['mitreId'])
+
+        for tactic in tactics:
+            mitre_ids.append(f"{tactic['mitreId']} - {tactic['name']}")       
+
+        response.Success = True
+        response.Choices = mitre_ids
+        return response
+
 
 
 class TestCaseCreate(CommandBase):
@@ -54,9 +161,26 @@ class TestCaseCreate(CommandBase):
         task_id = taskData.args.get_arg("task_id")
         testcase_name = taskData.args.get_arg("name")
 
+        if taskData.args.get_arg("technique_id"):
+            mitre_technique_id = taskData.args.get_arg("technique_id").split(" - ")[0].upper()
+            mitre_technique_name = taskData.args.get_arg("technique_id").split(" - ")[1]
+        else:
+            mitre_technique_id = None
+        
+        if taskData.args.get_arg("tactic_id"):
+            mitre_tactic_id = taskData.args.get_arg("tactic_id").split(" - ")[0].upper()
+            mitre_tactic_name = taskData.args.get_arg("tactic_id").split(" - ")[1]
+        else:
+            mitre_tactic_id = None
+            mitre_tactic_name = None
+
         display_params = f"with task ID {task_id}"
-        if testcase_name is not None:
+        if testcase_name:
             display_params += f" and name '{testcase_name}'"
+        
+        if mitre_technique_id or mitre_tactic_name:
+            mitre_display_values = [mitre_technique_id, mitre_tactic_name]
+            display_params += f" (ATT&CK: {', '.join([x for x in mitre_display_values if x is not None])})"
         
         response = MythicCommandBase.PTTaskCreateTaskingMessageResponse(
             TaskID=taskData.Task.ID,
@@ -113,7 +237,7 @@ class TestCaseCreate(CommandBase):
                     task_data['responses'].append(task_response.to_json())
             
             rest_vectr, gql_vectr = VectrAPI.initialise_vectr_connection(taskData)
-            testcase = VectrAPI.transform_mythic_task_to_testcase(gql_vectr, task_data, testcase_name)
+            testcase = VectrAPI.transform_mythic_task_to_testcase(gql_vectr, task_data, testcase_name, mitre_technique_id, mitre_tactic_name)
             
             response_code, response_data = VectrAPI.create_test_cases(gql_vectr.connection_params, gql_vectr.target_db, gql_vectr.campaign_id, [testcase])
 

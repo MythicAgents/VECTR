@@ -3,6 +3,7 @@ from mythic_container.MythicRPC import *
 from vectr.VectrRequests import VectrAPI
 from gql import gql
 
+from pydantic import BaseModel
 
 class TestCaseArtifactUploadArguments(TaskArguments):
 
@@ -47,7 +48,8 @@ class TestCaseArtifactUploadArguments(TaskArguments):
             ),
             CommandParameter(
                 name="test_case_id",
-                type=ParameterType.String,
+                type=ParameterType.ChooseOne,
+                dynamic_query_function=self.get_vectr_test_cases,
                 parameter_group_info=[
                     ParameterGroupInfo(
                         required=True,
@@ -68,6 +70,43 @@ class TestCaseArtifactUploadArguments(TaskArguments):
 
     async def parse_dictionary(self, dictionary_arguments):
         self.load_args_from_dictionary(dictionary=dictionary_arguments)
+
+
+    async def get_vectr_test_cases(self, callback: PTRPCDynamicQueryFunctionMessage) -> PTRPCDynamicQueryFunctionMessageResponse:
+        response = PTRPCDynamicQueryFunctionMessageResponse()
+
+        class task_data_mock(BaseModel):
+            BuildParameters: list
+            Secrets: dict
+        
+        payload_resp = await SendMythicRPCPayloadSearch(MythicRPCPayloadSearchMessage(
+            CallbackID=callback.Callback,
+            PayloadUUID=callback.PayloadUUID,
+            PayloadTypes=[callback.PayloadType],
+        ))
+        if not payload_resp.Success:
+            response.Error = payload_resp.Error
+            return response
+        if len(payload_resp.Payloads) == 0:
+            response.Error = "No payloads found"
+            return response
+
+        task_data = task_data_mock(BuildParameters=payload_resp.Payloads[0].BuildParameters, Secrets=callback.Secrets)
+
+        rest_vectr, gql_vectr = VectrAPI.initialise_vectr_connection(task_data)
+        response_code, tasks = VectrAPI.get_testcases_for_campaign_by_id(gql_vectr.connection_params, gql_vectr.target_db, gql_vectr.campaign_id)
+        
+        if response_code != 200:
+            response.Error = "Error fetching test cases"
+            return response
+
+        task_ids = []
+        for task in tasks:
+            task_ids.append(f"{task['id']} - {task['name']}")
+        
+        response.Success = True
+        response.Choices = task_ids
+        return response
 
 
     async def get_files(self, callback: PTRPCDynamicQueryFunctionMessage) -> PTRPCDynamicQueryFunctionMessageResponse:
@@ -112,11 +151,13 @@ class TestCaseArtifactUpload(CommandBase):
     }
 
     async def create_go_tasking(self, taskData: MythicCommandBase.PTTaskMessageAllData) -> MythicCommandBase.PTTaskCreateTaskingMessageResponse:
+        test_case_id = taskData.args.get_arg("test_case_id").split(" - ")[0]
+
         response = MythicCommandBase.PTTaskCreateTaskingMessageResponse(
             TaskID=taskData.Task.ID,
             Success=False,
             Completed=True,
-            DisplayParams=f""
+            DisplayParams=f"for test case ID {test_case_id}"
         )
         try:
             fileMetadata = None
@@ -168,7 +209,6 @@ class TestCaseArtifactUpload(CommandBase):
             if response_code != 200:
                 raise Exception(response_data)
 
-            test_case_id = taskData.args.get_arg("test_case_id")
             execution_artifact_id = response_data['data']['savedData']['id']
             
             response_code, response_data = VectrAPI.rest_add_execution_artifact_to_test_case(
