@@ -176,6 +176,7 @@ class TestCaseUpdateName(CommandBase):
     description = "Update the MITRE tactic and technique of a test case in VECTR"
     version = 2
     author = "@ajpc500"
+    supported_ui_features = ["vectr:testcase_mitre_update"]
     argument_class = TestCaseUpdateNameArguments
     attackmapping = []
     completion_functions = {

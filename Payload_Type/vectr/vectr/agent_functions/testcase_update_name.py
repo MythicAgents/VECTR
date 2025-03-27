@@ -83,6 +83,7 @@ class TestCaseUpdateName(CommandBase):
     description = "Update the name of a test case in VECTR"
     version = 2
     author = "@ajpc500"
+    supported_ui_features = ["vectr:testcase_name_update"]
     argument_class = TestCaseUpdateNameArguments
     attackmapping = []
     completion_functions = {

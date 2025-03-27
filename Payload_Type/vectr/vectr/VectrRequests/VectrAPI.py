@@ -593,6 +593,7 @@ def get_testcases_for_campaign_by_id(connection_params: VectrGQLConnParams, db_n
               	path,
                 abbreviation
               },
+              operatorGuidance,
               outcomeNotes, 
               tags {
                 name

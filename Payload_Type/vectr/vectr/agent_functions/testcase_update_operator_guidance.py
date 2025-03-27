@@ -5,7 +5,7 @@ from gql import gql
 
 from pydantic import BaseModel
 
-class TestCaseGetRawJsonArguments(TaskArguments):
+class TestCaseUpdateOperatorGuidanceArguments(TaskArguments):
     def __init__(self, command_line, **kwargs):
         super().__init__(command_line, **kwargs)
         self.args = [
@@ -17,22 +17,28 @@ class TestCaseGetRawJsonArguments(TaskArguments):
                 parameter_group_info=[ParameterGroupInfo(
                     required=True
                 )]
-            )
+            ),
+            CommandParameter(
+                name="content",
+                type=ParameterType.String,
+                description="VECTR test case operator guidance content",
+                parameter_group_info=[ParameterGroupInfo(
+                    required=True
+                )]
+            ),
         ]
 
     async def parse_arguments(self):
-        if len(self.command_line) > 0:
-            if self.command_line[0] == '{':
-                temp_json = json.loads(self.command_line)
-                if "test_case_id" in temp_json:
-                    self.add_arg("test_case_id", temp_json["test_case_id"])
-                else:
-                    raise ValueError("Must supply a VECTR test case ID")        
-            else:
-                self.add_arg("test_case_id", self.command_line)
-        else:
-            raise ValueError("Must supply a VECTR test case ID")
-        
+        if len(self.command_line) == 0:
+            raise ValueError("Must supply a VECTR test case and new name")
+        raise ValueError("Must supply named arguments or use the modal")
+
+    async def parse_dictionary(self, dictionary_arguments):
+        if "test_case_id" in dictionary_arguments:
+            self.add_arg("test_case_id", dictionary_arguments["test_case_id"])
+        if "content" in dictionary_arguments:
+            self.add_arg("content", dictionary_arguments["content"])
+
     async def get_vectr_test_cases(self, callback: PTRPCDynamicQueryFunctionMessage) -> PTRPCDynamicQueryFunctionMessageResponse:
         response = PTRPCDynamicQueryFunctionMessageResponse()
 
@@ -70,22 +76,23 @@ class TestCaseGetRawJsonArguments(TaskArguments):
         return response
 
 
-class TestCaseGetRawJson(CommandBase):
-    cmd = "get_raw_testcase_json"
+class TestCaseUpdateOperatorGuidance(CommandBase):
+    cmd = "update_testcase_operator_guidance"
     needs_admin = False
-    help_cmd = "get_raw_testcase_json -test_case_id 1"
-    description = "Get raw JSON for a VECTR test case"
+    help_cmd = "update_testcase_operator_guidance -test_case_id 1 -content 'New content'"
+    description = "Update the operator guidance of a test case in VECTR"
     version = 2
     author = "@ajpc500"
-    argument_class = TestCaseGetRawJsonArguments
-    supported_ui_features = ["vectr:testcase_get_raw"]
+    supported_ui_features = ["vectr:testcase_opguidance_update"]
+    argument_class = TestCaseUpdateOperatorGuidanceArguments
     attackmapping = []
     completion_functions = {
     }
 
     async def create_go_tasking(self, taskData: MythicCommandBase.PTTaskMessageAllData) -> MythicCommandBase.PTTaskCreateTaskingMessageResponse:
         test_case_id = taskData.args.get_arg("test_case_id").split(" - ")[0]
-        
+        content = taskData.args.get_arg("content")
+
         response = MythicCommandBase.PTTaskCreateTaskingMessageResponse(
             TaskID=taskData.Task.ID,
             Success=False,
@@ -102,11 +109,20 @@ class TestCaseGetRawJson(CommandBase):
             if response_code != 200:
                 raise Exception(response_data)
 
+            if not response_data.get('redTeam', {}).get('command', None):
+                raise Exception("No redTeam.command field found for test case")
+
+            response_data['redTeam']['command'] = content
+
+            response_code, response_data = VectrAPI.rest_update_test_case(
+                rest_vectr.connection_params, rest_vectr.target_db, response_data
+            )
             return await VectrAPI.process_standard_response(
                 response_code=response_code,
-                response_data=response_data,
+                response_data=response_data['message'],
                 taskData=taskData,
-                response=response
+                response=response,
+                as_json=False
             )
 
         except Exception as e:
