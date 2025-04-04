@@ -1,4 +1,4 @@
-mythic-container==0.5.9
+mythic-container==0.5.28
 pydantic==1.10.12
 gql==3.4.1
 requests-toolbelt==1.0.0

@@ -5,6 +5,8 @@ from gql import gql
 
 from pydantic import BaseModel
 
+VECTR_TAG_NAME = "SentToVECTR"
+
 class TestCaseCreateArguments(TaskArguments):
     def __init__(self, command_line, **kwargs):
         super().__init__(command_line, **kwargs)
@@ -46,6 +48,16 @@ class TestCaseCreateArguments(TaskArguments):
                     required=False,
                     ui_position=3
                 )]
+            ),
+            CommandParameter(
+                name="force_create",
+                type=ParameterType.Boolean,
+                description="Force the creation of a VECTR test case for Mythic tasks that have already been imported",
+                default_value=False,
+                parameter_group_info=[ParameterGroupInfo(
+                    required=False,
+                    ui_position=4
+                )]
             )
         ]
 
@@ -62,7 +74,9 @@ class TestCaseCreateArguments(TaskArguments):
         if "technique_id" in dictionary_arguments:
             self.add_arg("technique_id", dictionary_arguments["technique_id"])
         if "tactic_id" in dictionary_arguments:
-            self.add_arg("tactic_id", dictionary_arguments["tactic_id"])        
+            self.add_arg("tactic_id", dictionary_arguments["tactic_id"])      
+        if "force_create" in dictionary_arguments:
+            self.add_arg("force_create", dictionary_arguments["force_create"])  
 
     async def get_vectr_mitre_techniques(self, callback: PTRPCDynamicQueryFunctionMessage) -> PTRPCDynamicQueryFunctionMessageResponse:
         response = PTRPCDynamicQueryFunctionMessageResponse()
@@ -160,6 +174,8 @@ class TestCaseCreate(CommandBase):
     async def create_go_tasking(self, taskData: MythicCommandBase.PTTaskMessageAllData) -> MythicCommandBase.PTTaskCreateTaskingMessageResponse:
         task_id = taskData.args.get_arg("task_id")
         testcase_name = taskData.args.get_arg("name")
+        force_create = taskData.args.get_arg("force_create")
+        task_has_existing_tag = False
 
         if taskData.args.get_arg("technique_id"):
             mitre_technique_id = taskData.args.get_arg("technique_id").split(" - ")[0].upper()
@@ -177,11 +193,14 @@ class TestCaseCreate(CommandBase):
         display_params = f"with task ID {task_id}"
         if testcase_name:
             display_params += f" and name '{testcase_name}'"
-        
+
         if mitre_technique_id or mitre_tactic_name:
             mitre_display_values = [mitre_technique_id, mitre_tactic_name]
             display_params += f" (ATT&CK: {', '.join([x for x in mitre_display_values if x is not None])})"
         
+        if force_create:
+            display_params += " (force creating)"
+
         response = MythicCommandBase.PTTaskCreateTaskingMessageResponse(
             TaskID=taskData.Task.ID,
             Success=False,
@@ -204,6 +223,24 @@ class TestCaseCreate(CommandBase):
                 response.TaskStatus = "Error: Task ID not found"
                 response.Success = False
                 return response
+
+            # We'll fetch the tags on the task before we continue to make sure it isn't a duplicate
+            tag_search_response = await SendMythicRPCTagSearch(MythicRPCTagSearchMessage(
+                TaskID=taskData.Task.ID, 
+                SearchTagTaskID=int(task_id),
+            ))
+            if tag_search_response.Success and len(tag_search_response.Tags) > 0:
+                if any(VECTR_TAG_NAME in tag.TagType.Name for tag in tag_search_response.Tags):
+                    if not force_create:
+                        await SendMythicRPCResponseCreate(MythicRPCResponseCreateMessage(
+                            TaskID=taskData.Task.ID,
+                            Response=f"Error: Task has the '{VECTR_TAG_NAME}' tag, and has already been imported into VECTR. Use the -force_create flag to create a new test case anyway.".encode("UTF8"),
+                        ))
+                        response.TaskStatus = f"Error: Task already imported into VECTR."
+                        response.Success = False
+                        return response
+                    else:
+                        task_has_existing_tag = True
 
             task_callback_id = task_data['task']['callback_id']
             task_name = task_data['task']['command_name']
@@ -238,8 +275,42 @@ class TestCaseCreate(CommandBase):
             
             rest_vectr, gql_vectr = VectrAPI.initialise_vectr_connection(taskData)
             testcase = VectrAPI.transform_mythic_task_to_testcase(gql_vectr, task_data, testcase_name, mitre_technique_id, mitre_tactic_name)
-            
+
             response_code, response_data = VectrAPI.create_test_cases(gql_vectr.connection_params, gql_vectr.target_db, gql_vectr.campaign_id, [testcase])
+
+            if response_code == 200 and not task_has_existing_tag:
+                try:
+                    # add tag to prevent accidental re-importing later on
+                    create_tag_response = await SendMythicRPCTagTypeGetOrCreate(MythicRPCTagTypeGetOrCreateMessage(
+                        TaskID=taskData.Task.ID,
+                        GetOrCreateTagTypeName=VECTR_TAG_NAME,
+                        GetOrCreateTagTypeDescription="Tasks that have been imported into VECTR",
+                        GetOrCreateTagTypeColor="#ff00fb"
+                    ))
+                    if create_tag_response.TagType:
+                        tag_type_id = create_tag_response.TagType.ID
+                        add_tag_to_task_response = await SendMythicRPCTagCreate(MythicRPCTagCreateMessage(
+                            TagTypeID=int(tag_type_id),
+                            TaskID=int(task_id),
+                            Data={
+                                "test_case_id": response_data["testcases"][0]['id'],
+                                "test_case_name": testcase.name,
+                                "added_by": task_data['task'].get('operator_username', "")
+                            }
+                        ))
+                        if not add_tag_to_task_response.Success:
+                            raise Exception(f"Add tag failed. {add_tag_to_task_response.Error}")
+                    else:
+                        raise Exception(f"Create or get tag failed. {create_tag_response.Error}")
+                except Exception as e:
+                    await SendMythicRPCResponseCreate(MythicRPCResponseCreateMessage(
+                        TaskID=taskData.Task.ID,
+                        Response=f"Error: Successfully created test case in VECTR, but failed to add the '{VECTR_TAG_NAME}' tag to Mythic task '{task_id}'. Error: {e}".encode("UTF8"),
+                    ))
+                    response.TaskStatus = f"Error: Tag assignment failed."
+                    response.Success = False
+                    return response
+                    
 
             return await VectrAPI.process_standard_response(
                 response_code=response_code,
