@@ -12,7 +12,7 @@ from gql.transport.requests import RequestsHTTPTransport
 from pydantic import BaseModel
 from typing import Dict
 from datetime import datetime, timezone
-import requests
+import requests, re
 
 # REMOVE ME
 import urllib3
@@ -686,7 +686,14 @@ Task ID: {task.get('id')}
     if callback.get('host'):
         target_hosts.append(callback.get('host'))
 
-    execution_epoch = int(datetime.strptime(task['timestamp'][:26], "%Y-%m-%d %H:%M:%S.%f").replace(tzinfo=timezone.utc).timestamp()) * 1000
+    # This appears to have duplicate timezone indicators, so using regex to get the content we want
+    timestamp_parse = re.match(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+\s\+\d{4}", task['timestamp'])
+    
+    if timestamp_parse:
+        execution_epoch = int(datetime.strptime(timestamp_parse.group(0), "%Y-%m-%d %H:%M:%S.%f %z").timestamp()*1000)
+    else:
+        logger.info("Error parsing timestamp, using current time")
+        execution_epoch = int(datetime.now().timestamp()*1000)
     
     return TestCase(
         Variant=f"{test_case_name}",
