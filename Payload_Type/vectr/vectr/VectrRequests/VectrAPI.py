@@ -371,9 +371,6 @@ def rest_get_mitre_techniques(connection_params: VectrRESTConnParams):
     return response.status_code, techniques
 
 def rest_get_mitre_tactics(connection_params: VectrRESTConnParams, db: str, assessment_id: int):
-        
-    # https://vectr:8081/sra-purpletools-rest/phases/getAssessmentActivePhases?databaseName=MYTHIC&assessmentId=95
-
     # Assessment specific active phases
     response = requests.get(
         connection_params.vectr_rest_url + "/phases/getAssessmentActivePhases?databaseName=" + db + "&assessmentId=" + str(assessment_id),
