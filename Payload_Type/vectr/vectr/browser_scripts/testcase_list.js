@@ -7,6 +7,8 @@ function(task, responses){
                 return {"backgroundColor": "rgb(242, 183, 145)"}
             case "Low":
                 return {"backgroundColor": "rgb(177, 213, 154)"}
+            case "Info":
+                return {"backgroundColor": "rgb(153, 153, 153)"}
             default:
                 return {}
         }
@@ -37,6 +39,9 @@ function(task, responses){
                             outcomeText = `Blocked (${data[i]["outcome"]['abbreviation']})`;
                         }
                         cellStyle = getOutcomeColour("High");
+                    } else if (data[i]["outcome"]['path'].startsWith("Logged")) {
+                        outcomeText = `Logged (${data[i]["outcome"]['abbreviation']})`;
+                        cellStyle = getOutcomeColour("Info");
                     } else {
                         outcomeText = ""
                         cellStyle = {}
